@@ -1,0 +1,20 @@
+version: "3"
+services:
+    auth_service:
+        build: ./auth_service/
+        environment:
+            DB_USER: root
+            DB_PASS: rootpassword
+            DB_HOST: auth_storage
+            DB_PORT: 27017
+        ports:
+            - 8000:8000
+        depends_on:
+            - auth_storage
+    auth_storage:
+        image: mongo:latest
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        ports:
+            - 27017:27017
