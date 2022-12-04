@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 
 from settings import get_settings
+from dependencies.crypto import get_hashed_password, check_password
 
 
 class UserStorage:
@@ -35,13 +36,36 @@ class UserStorage:
         '''
         if self.user_exists(username):
             raise UserAlreadyExists(username)
+        hashed_pass = get_hashed_password(password)
         self.collection.insert_one({
             'username': username,
-            'password': password,
-            'salt': '123,'
+            'password': hashed_pass,
         })
+
+    def verify_login(self, username: str, password: str):
+        '''
+        Checks the provided credentials. This means:
+        - Verifying that the username actually exists.
+        - Verifying that username + password combination is correct.
+        '''
+        if not self.user_exists(username):
+            raise UserDoesntExist(username)
+        user = self.collection.find_one({'username': username})
+        hashed_pass = user['password']
+        if not check_password(password, hashed_pass):
+            raise WrongPassword()
 
 
 class UserAlreadyExists(Exception):
     def __init__(self, username: str):
         super().__init__(f'Username {username} already exists')
+
+
+class UserDoesntExist(Exception):
+    def __init__(self, username: str):
+        super().__init__(f'Username {username} doesn\'t exist')
+
+
+class WrongPassword(Exception):
+    def __init__(self):
+        super().__init__('Wrong password was supplied')
