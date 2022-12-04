@@ -1,26 +1,27 @@
-from fastapi import FastAPI
+import uvicorn
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from config import get_settings
 from schemas import AuthInfo
-from user_storage import storage
+from routers import users
 
 
 app = FastAPI()
-users = {}
+app.include_router(users.router)
 
-@app.get('/register')
-def register(auth_info: AuthInfo):
-    settings = get_settings()
-    storage.create_user(
-        auth_info.username,
-        auth_info.password
+
+@app.exception_handler(StarletteHTTPException)
+def http_exception_handler(request, exc):
+    return JSONResponse(
+        exc.detail,
+        status_code=exc.status_code
     )
-    return {
-        'username': auth_info.username,
-        'password': auth_info.password,
-    }
 
-@app.post('/login')
-def login(auth_info: AuthInfo):
-    settings = get_settings()
-    return {}
+
+if __name__ == '__main__':
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000
+    )
