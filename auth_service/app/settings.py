@@ -9,6 +9,8 @@ class Settings(BaseSettings):
     db_pass: str
     db_host: str
     db_port: str
+    password_min_length: int
+    salt_rounds: int
 
 
 @lru_cache
