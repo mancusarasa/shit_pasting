@@ -6,6 +6,11 @@ from dependencies.user_validations import (
     password_is_long_enough,
     verify_login_info,
 )
+from dependencies.json_web_token import (
+    create_jwt,
+    extract_jwt_payload,
+    ExpiredToken,
+)
 from db import get_users_storage
 from db.users import UserAlreadyExists
 
@@ -39,5 +44,6 @@ def register(auth_info: AuthInfo, response: Response):
     ]
 )
 def login(auth_info: AuthInfo):
-    # FIXME: this should return the JWT token (haven't implemented that yet)
-    return {}
+    storage = get_users_storage()
+    user = storage.get_user(auth_info.username)
+    return {'auth_token': create_jwt(user['id'])}
