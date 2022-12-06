@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, Depends
 
 from schemas import (
-    AuthInfo,
+    Credentials,
     Token,
 )
 from dependencies.user_validations import (
@@ -29,13 +29,13 @@ router = APIRouter()
         Depends(password_is_long_enough),
     ]
 )
-def register(auth_info: AuthInfo, response: Response):
+def register(credentials: Credentials, response: Response):
     storage = get_users_storage()
     storage.register_user(
-        auth_info.username,
-        auth_info.password
+        credentials.username,
+        credentials.password
     )
-    return {'username': auth_info.username}
+    return {'username': credentials.username}
 
 
 @router.post(
@@ -46,9 +46,9 @@ def register(auth_info: AuthInfo, response: Response):
         Depends(verify_login_info)
     ]
 )
-def login(auth_info: AuthInfo):
+def login(credentials: Credentials):
     storage = get_users_storage()
-    user = storage.get_user(auth_info.username)
+    user = storage.get_user(credentials.username)
     return {'auth_token': create_jwt(user['id'])}
 
 

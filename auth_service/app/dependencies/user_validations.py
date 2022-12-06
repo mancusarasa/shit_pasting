@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-from schemas import AuthInfo
+from schemas import Credentials
 from db import get_users_storage
 from db.users import (
     UserDoesntExist,
@@ -9,12 +9,12 @@ from db.users import (
 from settings import get_settings
 
 
-def username_exists(auth_info: AuthInfo):
+def username_exists(credentials: Credentials):
     '''
     Checks if the indicated username already
     exists, raising an HTTPException if it does.
     '''
-    username = auth_info.username
+    username = credentials.username
     storage = get_users_storage()
     if storage.user_exists(username):
         raise HTTPException(
@@ -23,20 +23,20 @@ def username_exists(auth_info: AuthInfo):
         )
 
 
-def password_is_long_enough(auth_info: AuthInfo):
+def password_is_long_enough(credentials: Credentials):
     '''
     Checks if the password is long enough
     raising an HTTPException if it doesn't
     '''
     settings = get_settings()
-    if len(auth_info.password) <= settings.password_min_length:
+    if len(credentials.password) <= settings.password_min_length:
         raise HTTPException(
             status_code=422,
             detail={'error': f'Password too short'}
         )
 
 
-def verify_login_info(auth_info: AuthInfo):
+def verify_login_info(credentials: Credentials):
     '''
     Checks if the provided user + password
     combination are correct, raising and HTTPException
@@ -44,11 +44,11 @@ def verify_login_info(auth_info: AuthInfo):
     '''
     settings = get_settings()
     storage = get_users_storage()
-    username = auth_info.username
+    username = credentials.username
     try:
         storage.verify_login(
-            auth_info.username,
-            auth_info.password
+            credentials.username,
+            credentials.password
         )
     except UserDoesntExist:
         raise HTTPException(
