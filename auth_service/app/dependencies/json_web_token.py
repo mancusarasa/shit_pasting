@@ -25,7 +25,11 @@ def create_jwt(user_id) -> str:
         'user_id': str(user_id),
         'exp': expiration_date,
     }
-    return jwt.encode(payload, settings.jwt_secret)
+    return jwt.encode(
+        payload,
+        settings.jwt_secret,
+        algorithm='HS256'
+    )
 
 
 def extract_jwt_payload(json_web_token: str) -> dict:
@@ -37,11 +41,13 @@ def extract_jwt_payload(json_web_token: str) -> dict:
     :param json_web_token: str web token.
     :return dict object.
     '''
+    settings = get_settings()
     try:
         return jwt.decode(
             json_web_token,
             settings.jwt_secret,
-            options={'require': ['exp']}
+            options={'require': ['exp']},
+            algorithms=['HS256']
         )
     except jwt.ExpiredSignatureError:
         raise ExpiredToken()
