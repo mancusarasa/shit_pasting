@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from pymongo import MongoClient
 
 from settings import get_settings
@@ -12,7 +14,7 @@ class UserStorage:
             db_host,
             db_port
         )
-        self.client = MongoClient(uri)
+        self.client = MongoClient(uri, uuidRepresentation='standard')
         self.database = self.client['auth_service']
         self.collection = self.database['users']
 
@@ -38,6 +40,7 @@ class UserStorage:
             raise UserAlreadyExists(username)
         hashed_pass = get_hashed_password(password)
         self.collection.insert_one({
+            'id': uuid4(),
             'username': username,
             'password': hashed_pass,
         })
@@ -54,6 +57,15 @@ class UserStorage:
         hashed_pass = user['password']
         if not check_password(password, hashed_pass):
             raise WrongPassword()
+
+    def get_user(self, username: str) -> dict:
+        '''
+        Obtains an existing user in the database.
+
+        :param username: str representing the user to retrieve.
+        :return dict with the info of the user
+        '''
+        return self.collection.find_one({'username': username})
 
 
 class UserAlreadyExists(Exception):
