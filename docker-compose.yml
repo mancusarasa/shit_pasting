@@ -9,6 +9,8 @@ services:
             DB_PORT: 27017
             PASSWORD_MIN_LENGTH: 8
             SALT_ROUNDS: 8
+            TOKEN_EXPIRATION: 10
+            JWT_SECRET: secret
         ports:
             - 8000:8000
         depends_on:
