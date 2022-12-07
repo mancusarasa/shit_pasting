@@ -1,0 +1,6 @@
+pyjwt
+fastapi
+uvicorn[standard]
+pydantic
+pymongo[srv]
+bcrypt
