@@ -8,8 +8,8 @@ class Settings(BaseSettings):
     db_pass: str
     db_host: str
     db_port: str
-    jwt_secret: str = 'secret'
-
+    jwt_secret: str
+    paste_expiration: int
 
 @lru_cache
 def get_settings():
