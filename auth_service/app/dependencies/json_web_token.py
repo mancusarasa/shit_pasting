@@ -31,27 +31,3 @@ def create_jwt(user_id) -> str:
         algorithm='HS256'
     )
 
-
-def extract_jwt_payload(json_web_token: str) -> dict:
-    '''
-    Extracts the payload from the provided JWT.
-    Returns a dict object containing the authentication
-    info of the user the JWT belongs to.
-
-    :param json_web_token: str web token.
-    :return dict object.
-    '''
-    settings = get_settings()
-    try:
-        return jwt.decode(
-            json_web_token,
-            settings.jwt_secret,
-            options={'require': ['exp']},
-            algorithms=['HS256']
-        )
-    except jwt.ExpiredSignatureError:
-        raise ExpiredToken()
-
-
-class ExpiredToken(Exception):
-    pass

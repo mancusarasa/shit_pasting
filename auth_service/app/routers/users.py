@@ -9,11 +9,7 @@ from dependencies.user_validations import (
     password_is_long_enough,
     verify_login_info,
 )
-from dependencies.json_web_token import (
-    create_jwt,
-    extract_jwt_payload,
-    ExpiredToken,
-)
+from dependencies.json_web_token import create_jwt
 from db import get_users_storage
 from db.users import UserAlreadyExists
 
@@ -50,13 +46,3 @@ def login(credentials: Credentials):
     storage = get_users_storage()
     user = storage.get_user(credentials.username)
     return {'auth_token': create_jwt(user['id'])}
-
-
-@router.get(
-    '/auth_info',
-    tags=['login'],
-    status_code=200,
-)
-def get_auth_info(token: Token):
-    payload = extract_jwt_payload(token.jwt)
-    return {'user_id': payload['user_id']}
