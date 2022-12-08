@@ -20,15 +20,26 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
-        ports:
-            - 27017:27017
+        # ports:
+        #    - 27017:27017
     paste_service:
         build: ./paste_service/
         environment:
             DB_USER: root
             DB_PASS: rootpassword
-            DB_HOST: pastes_storage
+            DB_HOST: paste_storage
             DB_PORT: 27017
             JWT_SECRET: secret
+            PASTE_EXPIRATION: 5
         ports:
             - 9000:9000
+        depends_on:
+            - paste_storage
+    paste_storage:
+        image: mongo:latest
+        # command: mongod --port 27018
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        # ports:
+            # - 27018:27018
