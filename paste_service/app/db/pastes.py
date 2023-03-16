@@ -19,7 +19,6 @@ class PastesStorage:
             db_host,
             db_port
         )
-        print(f'the uri is {uri}')
         self.client = MongoClient(uri, uuidRepresentation='standard')
         self.database = self.client['paste_service']
         self.collection = self.database['pastes']
