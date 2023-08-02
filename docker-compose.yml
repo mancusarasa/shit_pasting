@@ -20,8 +20,6 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
-        # ports:
-        #    - 27017:27017
     paste_service:
         build: ./paste_service/
         environment:
@@ -37,9 +35,18 @@ services:
             - paste_storage
     paste_storage:
         image: mongo:latest
-        # command: mongod --port 27018
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
-        # ports:
-            # - 27018:27018
+    web_ui:
+        build: ./web/
+        ports:
+            - 8080:8080
+        depends_on:
+            - auth_service
+            - paste_service
+        environment:
+            AUTH_SERVICE_HOST: auth_service
+            AUTH_SERVICE_PORT: 8000
+            PASTE_SERVICE_HOST: paste_service
+            PASTE_SERVICE_PORT: 9000
