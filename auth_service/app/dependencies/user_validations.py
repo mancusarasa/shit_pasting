@@ -39,7 +39,7 @@ def password_is_long_enough(credentials: Credentials):
 def verify_login_info(credentials: Credentials):
     '''
     Checks if the provided user + password
-    combination are correct, raising and HTTPException
+    combination are correct, raising an HTTPException
     if they aren't.
     '''
     settings = get_settings()
