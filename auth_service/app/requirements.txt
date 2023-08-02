@@ -2,5 +2,6 @@ pyjwt
 fastapi
 uvicorn[standard]
 pydantic
+pydantic-settings
 pymongo[srv]
 bcrypt
