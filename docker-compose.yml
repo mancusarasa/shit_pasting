@@ -38,15 +38,3 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    web_ui:
-        build: ./web/
-        ports:
-            - 8080:8080
-        depends_on:
-            - auth_service
-            - paste_service
-        environment:
-            AUTH_SERVICE_HOST: auth_service
-            AUTH_SERVICE_PORT: 8000
-            PASTE_SERVICE_HOST: paste_service
-            PASTE_SERVICE_PORT: 9000
