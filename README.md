@@ -13,7 +13,7 @@ docker-compose build && docker-compose down && docker-compose up
 Then in a separate terminal, run:
 
 ```shell
-curl -H "Content-type: application/json" -X POST localhost:8000/register -d '{"username": "user", "password": "password1"}
+curl -H "Content-type: application/json" -X POST localhost:8000/register -d '{"username": "user", "password": "password1"}'
 curl -H "Content-type: application/json" -X POST localhost:8000/login -d '{"username": "user", "password": "password1"}
 ```
 
