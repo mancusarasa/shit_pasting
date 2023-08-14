@@ -7,10 +7,30 @@ function LoginForm() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [state, setState] = useState('typing');
+    const [authResult, setAuthResult] = useState(null);
+    const [error, setError] = useState(null);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        const host = process.env.REACT_APP_AUTH_SERVICE_HOST;
+        const port = process.env.REACT_APP_AUTH_SERVICE_PORT;
+        const authServiceUrl = 'http://' + host + ':' + port + '/login'
+        const response = await fetch(authServiceUrl, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(response.json());
+            }
+            return response.json();
+        })
+        .catch(error => console.log(error));
+        setAuthResult(response.auth_token);
+        console.log(response)
     };
 
     return (
