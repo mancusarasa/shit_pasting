@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 
 import './LoginPage.css';
 
 
-function LoginForm() {
+function LoginForm({ authContext, setAuthToken }) {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [authResult, setAuthResult] = useState(null);
     const [error, setError] = useState(null);
 
     const handleSubmit = async (event) => {
@@ -26,10 +25,14 @@ function LoginForm() {
             if (!response.ok) {
                 throw new Error(response.json());
             }
-            return response.json();
+            const jsonValue = response.json();
+            setAuthToken(jsonValue.auth_token);
+            return jsonValue;
         })
-        .catch(error => console.log(error));
-        setAuthResult(response.auth_token);
+        .catch(error => {
+            setError(error);
+            console.log(error);
+        });
         console.log(response)
     };
 
@@ -70,11 +73,14 @@ function LoginForm() {
 }
 
 
-export default function LoginPage() {
+export default function LoginPage({ authToken, setAuthToken }) {
     return (
         <>
             <div className="login-page">
-                <LoginForm/>
+                <LoginForm
+                    authToken={authToken}
+                    setAuthToken={setAuthToken}
+                />
             </div>
         </>
     );
