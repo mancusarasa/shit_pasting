@@ -1,20 +1,24 @@
 import { useState, useContext } from 'react';
 
+import { AuthDispatchContext } from './AuthContext.js';
+
 import './LoginPage.css';
 
 
-function LoginForm({ authContext, setAuthToken }) {
+function LoginForm() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const dispatch = useContext(AuthDispatchContext);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const host = process.env.REACT_APP_AUTH_SERVICE_HOST;
         const port = process.env.REACT_APP_AUTH_SERVICE_PORT;
         const authServiceUrl = 'http://' + host + ':' + port + '/login'
-        const response = await fetch(authServiceUrl, {
+        await fetch(authServiceUrl, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -22,18 +26,23 @@ function LoginForm({ authContext, setAuthToken }) {
                 password: password
             })
         }).then(response => {
-            if (!response.ok) {
-                throw new Error(response.json());
+            return response.json();
+        }).then (jsonValue => {
+            if (jsonValue.error) {
+                setError(jsonValue.error);
+            } else {
+                setError(null);
+                dispatch({
+                    type: 'logged_in',
+                    authToken: jsonValue.auth_token
+                });
             }
-            const jsonValue = response.json();
-            setAuthToken(jsonValue.auth_token);
-            return jsonValue;
+
         })
         .catch(error => {
+            console.log('caught something?');
             setError(error);
-            console.log(error);
         });
-        console.log(response)
     };
 
     return (
@@ -62,10 +71,12 @@ function LoginForm({ authContext, setAuthToken }) {
                                 (event) => setPassword(event.target.value)
                             }
                         />
+                        {(error !== null) && <div className="error">{error}</div>}
                     </div>
                     <div className="button-container">
                         <input type ="submit" value="Submit"/>
                     </div>
+                    
                 </form>
             </div>
         </div>
@@ -73,14 +84,11 @@ function LoginForm({ authContext, setAuthToken }) {
 }
 
 
-export default function LoginPage({ authToken, setAuthToken }) {
+export default function LoginPage() {
     return (
         <>
             <div className="login-page">
-                <LoginForm
-                    authToken={authToken}
-                    setAuthToken={setAuthToken}
-                />
+                <LoginForm/>
             </div>
         </>
     );
