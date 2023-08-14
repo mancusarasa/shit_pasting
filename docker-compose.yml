@@ -42,3 +42,11 @@ services:
         build: ./ui/
         ports:
             - 3000:3000
+        environment:
+            AUTH_SERVICE_HOST: localhost
+            AUTH_SERVICE_PORT: 8000
+            PASTE_SERVICE_HOST: localhost
+            PASTE_SERVICE_PORT: 9000
+        depends_on:
+            - paste_service
+            - auth_service
