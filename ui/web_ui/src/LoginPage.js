@@ -29,13 +29,13 @@ function LoginForm() {
       return response.json();
     }).then (jsonValue => {
       if (jsonValue.error) {
-      setError(jsonValue.error);
+        setError(jsonValue.error);
       } else {
-      setError(null);
-      dispatch({
-        type: 'logged_in',
-        authToken: jsonValue.auth_token
-      });
+        setError(null);
+        dispatch({
+          type: 'logged_in',
+          authToken: jsonValue.auth_token
+        });
     }
     })
     .catch(error => {
