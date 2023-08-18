@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <>
-    <AuthContext.Provider value={authToken}>
+      <AuthContext.Provider value={authToken}>
         <AuthDispatchContext.Provider value={dispatch}>
           {authToken !== null ? <AppRouter/ > : <LoginPage/>}
         </AuthDispatchContext.Provider>
