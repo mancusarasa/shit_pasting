@@ -14,7 +14,7 @@ export default function Pastes() {
       const pasteServiceUrl = 'http://' + host + ':' + port + '/myPastes';
       await fetch(pasteServiceUrl, {
         method: 'GET',
-        headers: {'Content-Type': 'application/json', 'Authentication': 'Bearer '  + authToken}
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer '  + authToken}
       }).then(response => {
         return response.json();
       }).then(jsonValue => {
