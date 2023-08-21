@@ -12,12 +12,11 @@ function LoginForm() {
   const [error, setError] = useState(null);
   const dispatch = useContext(AuthDispatchContext);
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const host = process.env.REACT_APP_AUTH_SERVICE_HOST;
     const port = process.env.REACT_APP_AUTH_SERVICE_PORT;
-    const authServiceUrl = 'http://' + host + ':' + port + '/login'
+    const authServiceUrl = `http://${host}:${port}/login`;
     await fetch(authServiceUrl, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
