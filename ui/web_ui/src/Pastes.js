@@ -12,11 +12,11 @@ export default function Pastes() {
       const host = process.env.REACT_APP_PASTE_SERVICE_HOST;
       const port = process.env.REACT_APP_PASTE_SERVICE_PORT;
       const pasteServiceUrl = `http://${host}:${port}/myPastes`;
-      await fetch(something, {
+      await fetch(pasteServiceUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer '  + authToken
+          'Authorization': `Bearer ${authToken}`
         }
       }).then(response => {
         return response.json();
@@ -26,7 +26,6 @@ export default function Pastes() {
       }).catch(error => {
         console.log(error);
       });
-
     };
     fetchPastes();
   });
