@@ -39,11 +39,16 @@ class UserStorage:
         if self.user_exists(username):
             raise UserAlreadyExists(username)
         hashed_pass = get_hashed_password(password)
+        user_id = uuid4()
         self.collection.insert_one({
-            'id': uuid4(),
+            'id': user_id,
             'username': username,
-            'password': hashed_pass,
+            'password': hashed_pass
         })
+        return {
+            'id': user_id,
+            'username': username
+        }
 
     def verify_login(self, username: str, password: str):
         '''

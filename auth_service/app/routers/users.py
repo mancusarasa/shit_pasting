@@ -27,11 +27,11 @@ router = APIRouter()
 )
 def register(credentials: Credentials, response: Response):
     storage = get_users_storage()
-    storage.register_user(
+    user = storage.register_user(
         credentials.username,
         credentials.password
     )
-    return {'username': credentials.username}
+    return user
 
 
 @router.post(
