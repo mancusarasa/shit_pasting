@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from pymongo import MongoClient
+import base62
 
 from settings import get_settings
 from dependencies.crypto import get_hashed_password, check_password
@@ -39,7 +40,9 @@ class UserStorage:
         if self.user_exists(username):
             raise UserAlreadyExists(username)
         hashed_pass = get_hashed_password(password)
-        user_id = uuid4()
+        user_id = base62.encode(uuid4().int)
+        # FIXME: add retry logic to avoid potential collisions
+        # over the id
         self.collection.insert_one({
             'id': user_id,
             'username': username,
