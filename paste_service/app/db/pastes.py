@@ -40,7 +40,7 @@ class PastesStorage:
         inserted = False
         expiration = expiration_time or settings.paste_expiration
         while not inserted:
-            random_id = generate_random_id(64)
+            random_id = generate_random_id()
             if self.collection.find_one({'paste_id': random_id}) is None:
                 inserted = True
                 self.collection.insert_one({
@@ -58,7 +58,10 @@ class PastesStorage:
         permissions check. The outer layers should check for
         authorization over the paste.
         '''
-        paste = self.collection.find_one({'paste_id': paste_id})
+        paste = self.collection.find_one(
+            filter={'paste_id': paste_id},
+            projection={'_id': False}
+        )
         if paste is None:
             raise PasteNotFoundException(paste_id)
         return paste

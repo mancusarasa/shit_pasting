@@ -4,3 +4,4 @@ uvicorn[standard]
 pydantic
 pydantic-settings
 pymongo[srv]
+pybase62

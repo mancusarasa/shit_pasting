@@ -1,9 +1,11 @@
-from base64 import b64encode
 from os import urandom
+from uuid import uuid4
 
-def generate_random_id(length: int) -> str:
+import base62
+
+
+def generate_random_id() -> str:
     '''
-    Generates a random id of the indicated length.
+    Generates a random id
     '''
-    random_bytes = urandom(length)
-    return b64encode(random_bytes).decode('utf-8')
+    return base62.encode(uuid4().int)
