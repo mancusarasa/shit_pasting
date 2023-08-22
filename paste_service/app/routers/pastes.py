@@ -1,15 +1,37 @@
+import logging
+
 from fastapi import (
     APIRouter,
     Header,
-    Depends
+    Depends,
+    HTTPException
 )
 
 from dependencies.authentication import extract_current_user
 from schemas import Paste
 from db import get_pastes_storage
+from db.pastes import PasteNotFoundException
 
 
 router = APIRouter()
+
+
+@router.get(
+    '/{paste_id}',
+    tags=['pastes'],
+    status_code=200
+)
+def retrieve_paste(paste_id: str):
+    storage = get_pastes_storage()
+    try:
+        paste = storage.get_paste(paste_id)
+        logging.error(paste)
+        return paste
+    except PasteNotFoundException:
+        raise HTTPException(
+            status_code=404,
+            detail={'error': f'Paste {paste_id} not found'}
+        )
 
 
 @router.get(
