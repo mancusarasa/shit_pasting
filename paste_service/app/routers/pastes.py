@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 @router.get(
-    '/{paste_id}',
+    '/paste/{paste_id}',
     tags=['pastes'],
     status_code=200
 )
