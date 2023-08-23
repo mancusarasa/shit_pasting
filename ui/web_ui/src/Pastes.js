@@ -1,4 +1,5 @@
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Link } from "react-router-dom";
 
 import { AuthContext } from './AuthContext.js';
 
@@ -6,6 +7,7 @@ import { AuthContext } from './AuthContext.js';
 export default function Pastes() {
 
   const authToken = useContext(AuthContext);
+  const [pastes, setPastes] = useState([]);
 
   useEffect(() => {
     const fetchPastes = async () => {
@@ -21,16 +23,32 @@ export default function Pastes() {
       }).then(response => {
         return response.json();
       }).then(jsonValue => {
-        console.log('these are my pastes:');
         console.log(jsonValue);
+        setPastes(jsonValue.pastes);
       }).catch(error => {
         console.log(error);
       });
     };
     fetchPastes();
-  });
+  }, [authToken]);
 
-  return (
-    <div>My Pastes!</div>
+  return pastes !== null ? (
+    <div>
+      <ul>
+        {pastes.map((paste) => {
+          return (
+            <li key={paste.paste_id}>
+            <Link to={'/paste/'+ paste.paste_id}>Something</Link>
+              <hr />
+              <br />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  ) : (
+    <div>
+      No pastes yet!
+    </div>
   );
 }
