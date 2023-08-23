@@ -1,5 +1,3 @@
-import logging
-
 from fastapi import (
     APIRouter,
     Header,
@@ -24,9 +22,7 @@ router = APIRouter()
 def retrieve_paste(paste_id: str):
     storage = get_pastes_storage()
     try:
-        paste = storage.get_paste(paste_id)
-        logging.error(paste)
-        return paste
+        return storage.get_paste(paste_id)
     except PasteNotFoundException:
         raise HTTPException(
             status_code=404,
