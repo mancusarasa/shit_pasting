@@ -35,7 +35,7 @@ function LoginForm() {
           type: 'logged_in',
           authToken: jsonValue.auth_token
         });
-    }
+      }
     })
     .catch(error => {
       console.log('caught something?');
