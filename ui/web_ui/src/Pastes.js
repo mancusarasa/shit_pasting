@@ -1,12 +1,14 @@
 import { useState, useEffect, useContext } from 'react';
+
 import { Link } from "react-router-dom";
 
-import { AuthContext } from './AuthContext.js';
+import { AuthContext, AuthDispatchContext } from './AuthContext.js';
 
 
 export default function Pastes() {
 
   const authToken = useContext(AuthContext);
+  const dispatch = useContext(AuthDispatchContext);
   const [pastes, setPastes] = useState([]);
 
   useEffect(() => {
@@ -21,16 +23,18 @@ export default function Pastes() {
           'Authorization': `Bearer ${authToken}`
         }
       }).then(response => {
+        if (response.status === 403) {
+          dispatch({'type': 'logged_out'})
+        }
         return response.json();
       }).then(jsonValue => {
-        console.log(jsonValue);
         setPastes(jsonValue.pastes);
       }).catch(error => {
         console.log(error);
       });
     };
     fetchPastes();
-  }, [authToken]);
+  }, [authToken, dispatch]);
 
   return pastes !== null ? (
     <div>
