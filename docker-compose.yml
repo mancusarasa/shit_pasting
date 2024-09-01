@@ -42,9 +42,9 @@ services:
         build:
             context: ./new_ui/
             args:
-                AUTH_SERVICE_HOST: localhost
+                AUTH_SERVICE_HOST: auth_service
                 AUTH_SERVICE_PORT: 8000
-                PASTE_SERVICE_HOST: localhost
+                PASTE_SERVICE_HOST: paste_service
                 PASTE_SERVICE_PORT: 9000
         ports:
             - 3000:3000
