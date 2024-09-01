@@ -15,7 +15,7 @@ const authReducer = (auth_state: AuthState, auth_action: AuthAction): AuthState 
   switch (auth_action.event_type) {
     case "logged_in": {
       cookies.set("auth_token", auth_action.auth_token);
-      return { auth_token: auth_action.auth_token } ;
+      return { auth_token: auth_action.auth_token };
     }
     case "logged_out": {
       cookies.remove("auth_token")
