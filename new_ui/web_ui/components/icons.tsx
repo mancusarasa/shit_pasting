@@ -213,7 +213,7 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
   );
 };
 
-export const MailIcon = ({ fill, size, height, width, ...props }) => {
+export const MailIcon: React.FC<IconSvgProps> = ({ fill, size, height, width, ...props }) => {
   return (
     <svg
       width={size || width || 24}
@@ -235,7 +235,7 @@ export const MailIcon = ({ fill, size, height, width, ...props }) => {
   );
 };
 
-export const PasswordIcon = ({ fill, size, height, width, ...props }) => {
+export const PasswordIcon: React.FC<IconSvgProps> = ({ fill, size, height, width, ...props }) => {
   return (
     <svg
       width={size || width || 24}
