@@ -1,15 +1,11 @@
 "use client";
 
 import { Navbar } from "@/components/navbar";
-import { AuthContext, AuthDispatchContext } from "@/components/auth-context";
+import { AuthContext, AuthDispatchContext, AuthState, AuthAction } from "@/components/auth-context";
 import { useReducer } from "react";
 import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
-
-type AuthState = { auth_token: string };
-
-type AuthAction = { event_type: 'logged_in', auth_token: string } | { event_type: 'logged_out' }
 
 const authReducer = (auth_state: AuthState, auth_action: AuthAction): AuthState => {
   switch (auth_action.event_type) {
@@ -25,13 +21,15 @@ const authReducer = (auth_state: AuthState, auth_action: AuthAction): AuthState 
 }
 
 export const HomeContent = ({children,}: {children: React.ReactNode;}) => {
-  // const [authToken, dispatch] = useReducer(authReducer, cookies.get("auth_token") || "");
-  const [authToken, dispatch] = useReducer(authReducer, {auth_token: ""});
+  const [authState, dispatch] = useReducer(
+    authReducer,
+    { auth_token: cookies.get("auth_token") || "" }
+  );
 
   return (
     <>
       <Navbar />
-      <AuthContext.Provider value={authToken}>
+      <AuthContext.Provider value={authState}>
         <AuthDispatchContext.Provider value={dispatch}>
           <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
             {children}
