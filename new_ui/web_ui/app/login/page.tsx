@@ -7,11 +7,13 @@ import { Input } from "@nextui-org/input";
 import { Checkbox } from "@nextui-org/checkbox";
 import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
-import { useState } from 'react';
+import { AuthContext } from "@/components/auth-context";
+import { useState, useContext } from 'react';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { state, dispatch } = useContext(AuthContext);
 
   const handleLogin = async (event: PressEvent) => {
     const host = process.env.NEXT_PUBLIC_AUTH_SERVICE_HOST;
@@ -27,12 +29,14 @@ export default function LoginPage() {
     }).then(response => {
       return response.json();
     }).then (jsonValue => {
-      console.log(jsonValue);
+      dispatch({
+        event_type: 'logged_in',
+        auth_token: jsonValue.auth_token
+      });
     })
-    // .catch(error => {
-    //   console.log('caught something?');
-    //   setError(error);
-    // });
+    .catch(error => {
+      console.log('caught something?');
+    });
   };
 
   return (
