@@ -2,6 +2,11 @@ FROM ubuntu:20.04
 
 SHELL ["/bin/bash", "--login", "-i", "-c"]
 
+ARG AUTH_SERVICE_HOST
+ARG AUTH_SERVICE_PORT
+ARG PASTE_SERVICE_HOST
+ARG PASTE_SERVICE_PORT
+
 # install global dependencies
 RUN apt-get update && apt-get install -y curl
 
@@ -20,5 +25,13 @@ ADD web_ui ./
 # install npm shit
 RUN npm install
 
+RUN echo "NEXT_PUBLIC_AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}" >> .env
+RUN echo "NEXT_PUBLIC_AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}" >> .env
+RUN echo "NEXT_PUBLIC_PASTE_SERVICE_HOST=${PASTE_SERVICE_HOST}" >> .env
+RUN echo "NEXT_PUBLIC_PASTE_SERVICE_PORT=${PASTE_SERVICE_PORT}" >> .env
+
+# create a production build
+RUN npm run build
+
 # default entrypoint
-ENTRYPOINT source ~/.bashrc && REACT_APP_AUTH_SERVICE_PORT=$AUTH_SERVICE_PORT REACT_APP_AUTH_SERVICE_HOST=$AUTH_SERVICE_HOST REACT_APP_PASTE_SERVICE_HOST=$PASTE_SERVICE_HOST REACT_APP_PASTE_SERVICE_PORT=$PASTE_SERVICE_PORT npm run dev
+ENTRYPOINT source ~/.bashrc && npm start

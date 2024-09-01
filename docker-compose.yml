@@ -38,27 +38,16 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    ui:
-        build: ./ui/
+    new_ui:
+        build:
+            context: ./new_ui/
+            args:
+                AUTH_SERVICE_HOST: localhost
+                AUTH_SERVICE_PORT: 8000
+                PASTE_SERVICE_HOST: localhost
+                PASTE_SERVICE_PORT: 9000
         ports:
             - 3000:3000
-        environment:
-            AUTH_SERVICE_HOST: localhost
-            AUTH_SERVICE_PORT: 8000
-            PASTE_SERVICE_HOST: localhost
-            PASTE_SERVICE_PORT: 9000
-        depends_on:
-            - paste_service
-            - auth_service
-    new_ui:
-        build: ./new_ui/
-        ports:
-            - 4000:3000
-        environment:
-            AUTH_SERVICE_HOST: localhost
-            AUTH_SERVICE_PORT: 8000
-            PASTE_SERVICE_HOST: localhost
-            PASTE_SERVICE_PORT: 9000
         depends_on:
             - paste_service
             - auth_service
