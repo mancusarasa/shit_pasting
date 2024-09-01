@@ -19,7 +19,7 @@ const authReducer = (auth_state: AuthState, auth_action: AuthAction): AuthState 
     }
     case "logged_out": {
       cookies.remove("auth_token")
-      return { auth_token: ""};
+      return { auth_token: "" };
     }
   }
 }
