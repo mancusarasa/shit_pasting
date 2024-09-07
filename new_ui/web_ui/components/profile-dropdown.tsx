@@ -7,6 +7,7 @@ import {
 } from "@nextui-org/dropdown";
 import { Avatar } from "@nextui-org/avatar";
 import {
+  ProfileIcon,
   SettingsIcon,
   LogoutIcon
 } from "@/components/icons";
@@ -25,10 +26,10 @@ export const ProfileDropdown = () => {
           />
         </DropdownTrigger>
         <DropdownMenu variant="flat">
-          <DropdownItem key="profile" className="h-14 gap-2">
-            <NextLink href="/myProfile">
-              <p className="font-semibold">Admin</p>
-              <p className="font-semibold">View profile</p>
+          <DropdownItem key="profile">
+            <NextLink className="flex" href="/myProfile">
+              <ProfileIcon className="w-5 h-5 mr-3"/>
+              <p>My profile</p>
             </NextLink>
           </DropdownItem>
           <DropdownItem>
