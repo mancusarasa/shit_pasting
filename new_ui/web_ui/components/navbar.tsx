@@ -59,14 +59,14 @@ export const Navbar = () => {
             <span>New Paste</span>
           </NextLink>
         </NavbarMenuItem>
-        <NavbarMenuItem key="feed">
-          <NextLink href={'/feed'} className="flex items-center hover:underline">
+        <NavbarMenuItem key="my_pastes">
+          <NextLink href={'/my_pastes'} className="flex items-center hover:underline">
             <MyPastesIcon className="w-5 h-5 mr-3" />
             <span>My Pastes</span>
           </NextLink>
         </NavbarMenuItem>
-        <NavbarMenuItem key="my_pastes">
-          <NextLink href={'/my_pastes'} className="flex items-center hover:underline">
+        <NavbarMenuItem key="feed">
+          <NextLink href={'/feed'} className="flex items-center hover:underline">
             <MyFeedIcon className="w-5 h-5 mr-3" />
             <span>Feed</span>
           </NextLink>
