@@ -4,7 +4,14 @@ import { IconSvgProps } from "@/types";
 import { Link } from "@nextui-org/link";
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
-import { HomeIcon, SettingsIcon, PowerIcon, UsersIcon } from "@/components/icons";
+import {
+  HomeIcon,
+  SettingsIcon,
+  PowerIcon,
+  UsersIcon,
+  NewPasteIcon,
+  MyPastesIcon
+} from "@/components/icons";
 
 export const Sidebar = () => {
   return (
@@ -33,6 +40,18 @@ export const Sidebar = () => {
             <NextLink href={'/profile'} className="flex items-center px-6 py-3 text-white hover:bg-gray-700">
               <UsersIcon className="w-5 h-5 mr-3" />
               <span>Profile</span>
+            </NextLink>
+          </li>
+          <li>
+            <NextLink href={'/compose'} className="flex items-center px-6 py-3 text-white hover:bg-gray-700">
+              <NewPasteIcon className="w-5 h-5 mr-3" />
+              <span>New Paste</span>
+            </NextLink>
+          </li>
+          <li>
+            <NextLink href={'/my_pastes'} className="flex items-center px-6 py-3 text-white hover:bg-gray-700">
+              <MyPastesIcon className="w-5 h-5 mr-3" />
+              <span>My Pastes</span>
             </NextLink>
           </li>
         </ul>
