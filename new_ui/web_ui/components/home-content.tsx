@@ -15,7 +15,6 @@ export const HomeContent = ({children,}: {children: React.ReactNode;}) => {
   return (
     <>
       <Navbar />
-      <Sidebar />
       <AuthContext.Provider value={value}>
         <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
           {children}
