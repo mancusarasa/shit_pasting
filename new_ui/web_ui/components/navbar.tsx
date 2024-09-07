@@ -1,4 +1,13 @@
 import {
+  HomeIcon,
+  SettingsIcon,
+  PowerIcon,
+  ProfileIcon,
+  NewPasteIcon,
+  MyPastesIcon,
+  MyFeedIcon
+} from "@/components/icons";
+import {
 	Navbar as NextUINavbar,
 	NavbarContent,
 	NavbarMenu,
@@ -7,18 +16,26 @@ import {
 	NavbarItem,
 	NavbarMenuItem,
 } from "@nextui-org/navbar";
-import { Input } from "@nextui-org/input";
 import NextLink from "next/link";
-import clsx from "clsx";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { ProfileDropdown } from "@/components/profile-dropdown";
+import React from "react";
 
 export const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
 	return (
-		<NextUINavbar maxWidth="full" position="sticky">
-			<NavbarContent>
+		<NextUINavbar
+      isBordered
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      maxWidth="full"
+      position="sticky"
+    >
+      <NavbarContent justify="start">
+        <NavbarMenuToggle />
 				<NavbarBrand as="li">
-					<NextLink className="flex justify-start items-center gap-1" href="/">
+					<NextLink className="flex items-center gap-1" href="/">
 						<p className="font-bold text-inherit">Shit Pasting</p>
 					</NextLink>
 				</NavbarBrand>
@@ -29,6 +46,32 @@ export const Navbar = () => {
 				</NavbarItem>
         <ProfileDropdown />
       </NavbarContent>
+      <NavbarMenu>
+        <NavbarMenuItem key="home">
+          <NextLink href={'/'} className="flex items-center hover:underline">
+            <HomeIcon className="w-5 h-5 mr-3" />
+            <span>Home</span>
+          </NextLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="compose">
+          <NextLink href={'/compose'} className="flex items-center hover:underline">
+            <NewPasteIcon className="w-5 h-5 mr-3" />
+            <span>New Paste</span>
+          </NextLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="feed">
+          <NextLink href={'/feed'} className="flex items-center hover:underline">
+            <MyPastesIcon className="w-5 h-5 mr-3" />
+            <span>My Pastes</span>
+          </NextLink>
+        </NavbarMenuItem>
+        <NavbarMenuItem key="my_pastes">
+          <NextLink href={'/my_pastes'} className="flex items-center hover:underline">
+            <MyFeedIcon className="w-5 h-5 mr-3" />
+            <span>Feed</span>
+          </NextLink>
+        </NavbarMenuItem>
+      </NavbarMenu>
 		</NextUINavbar>
 	);
 };
