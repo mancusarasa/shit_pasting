@@ -1,11 +1,16 @@
 "use client";
 
 import { Navbar } from "@/components/navbar";
-import { AuthContext, authReducer, initialState, AuthDispatchContextType } from "@/components/auth-context";
+import {
+  AuthContext,
+  authReducer,
+  initialState,
+  AuthDispatchContextType
+} from "@/components/auth-context";
 import { Sidebar } from "@/components/sidebar";
 import { useReducer } from "react";
 
-export const HomeContent = ({children,}: {children: React.ReactNode;}) => {
+export const MainContent = ({children,}: {children: React.ReactNode;}) => {
   const [state, dispatch] = useReducer(
     authReducer,
     initialState
@@ -14,8 +19,8 @@ export const HomeContent = ({children,}: {children: React.ReactNode;}) => {
 
   return (
     <>
-      <Navbar />
       <AuthContext.Provider value={value}>
+        <Navbar />
         <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
           {children}
         </main>
