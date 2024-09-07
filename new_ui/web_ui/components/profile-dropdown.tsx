@@ -6,6 +6,10 @@ import {
   DropdownMenu
 } from "@nextui-org/dropdown";
 import { Avatar } from "@nextui-org/avatar";
+import {
+  SettingsIcon,
+  LogoutIcon
+} from "@/components/icons";
 
 export const ProfileDropdown = () => {
   return (
@@ -28,12 +32,14 @@ export const ProfileDropdown = () => {
             </NextLink>
           </DropdownItem>
           <DropdownItem>
-            <NextLink href="/settings">
+            <NextLink className="flex" href="/settings">
+              <SettingsIcon className="w-5 h-5 mr-3" />
               <p>Settings</p>
             </NextLink>
           </DropdownItem>
           <DropdownItem>
-            <NextLink href="/logout">
+            <NextLink className="flex" href="/logout">
+              <LogoutIcon className="w-5 h-5 mr-3"/>
               <p class="text-red-600">Log Out</p>
             </NextLink>
           </DropdownItem>
