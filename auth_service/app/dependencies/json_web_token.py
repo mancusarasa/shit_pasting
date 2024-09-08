@@ -9,7 +9,7 @@ import jwt
 from settings import get_settings
 
 
-def create_jwt(user_id) -> str:
+def create_jwt(user_id: int, username: str) -> str:
     '''
     Creates a JWT (JSON web token), encrypting the username
     as part of the payload.
@@ -23,6 +23,7 @@ def create_jwt(user_id) -> str:
     expiration_date = datetime.now(timezone.utc) + timedelta(minutes=delta)
     payload = {
         'user_id': str(user_id),
+        'username': username,
         'exp': expiration_date,
     }
     return jwt.encode(
