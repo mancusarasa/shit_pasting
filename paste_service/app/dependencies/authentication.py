@@ -1,4 +1,4 @@
-import jwt
+import requests
 from fastapi import (
     Depends,
     HTTPException
@@ -7,7 +7,6 @@ from fastapi.security.http import (
     HTTPBearer,
     HTTPAuthorizationCredentials
 )
-
 
 from settings import get_settings
 
@@ -36,22 +35,13 @@ def extract_current_user(token: str = Depends(extract_jwt)):
     :param token: str representing a JWT.
     :return str: user_id as a string.
     '''
+    headers = {
+        'Authorization': f'Bearer {token}',
+    }
     settings = get_settings()
-    try:
-        payload = jwt.decode(
-            token,
-            settings.jwt_secret,
-            options={'require': ['exp']},
-            algorithms=['HS256']
-        )
-        return str(payload['user_id'])
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(
-            status_code=403,
-            detail={'error': 'Your token has expired'}
-        )
-    except jwt.InvalidTokenError:
-        raise HTTPException(
-            status_code=403,
-            detail={'error': 'Invalid token provided'}
-        )
+    response = requests.get(
+        f'{settings.auth_service_url}/userinfo',
+        headers=headers
+    )
+    response.raise_for_status()
+    return response.json()['username']
