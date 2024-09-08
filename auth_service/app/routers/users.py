@@ -47,7 +47,10 @@ def register(credentials: Credentials, response: Response):
 def login(credentials: Credentials):
     storage = get_users_storage()
     user = storage.get_user(credentials.username)
-    return {'auth_token': create_jwt(user['id'])}
+    return {
+        'auth_token': create_jwt(user['id'], credentials.username)
+    }
+
 
 @router.get(
     '/userinfo',
