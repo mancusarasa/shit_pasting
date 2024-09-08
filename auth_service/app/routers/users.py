@@ -1,3 +1,4 @@
+from typing import Dict
 from fastapi import APIRouter, Response, Depends
 
 from schemas import (
@@ -10,6 +11,7 @@ from dependencies.user_validations import (
     verify_login_info,
 )
 from dependencies.json_web_token import create_jwt
+from dependencies.user_info import extract_user_info
 from db import get_users_storage
 from db.users import UserAlreadyExists
 
@@ -46,3 +48,11 @@ def login(credentials: Credentials):
     storage = get_users_storage()
     user = storage.get_user(credentials.username)
     return {'auth_token': create_jwt(user['id'])}
+
+@router.get(
+    '/userinfo',
+    tags=['retrieve user info'],
+    status_code=200,
+)
+def get_user_info(user_info: Dict = Depends(extract_user_info)):
+    return dict(user_info)
