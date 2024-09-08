@@ -27,8 +27,9 @@ services:
             DB_PASS: rootpassword
             DB_HOST: paste_storage
             DB_PORT: 27017
-            JWT_SECRET: secret
             PASTE_EXPIRATION: 5
+            AUTH_SERVICE_HOST: auth_service
+            AUTH_SERVICE_PORT: 8000
         ports:
             - 9000:9000
         depends_on:
