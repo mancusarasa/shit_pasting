@@ -7,8 +7,9 @@ from fastapi.security.http import (
     HTTPBearer,
     HTTPAuthorizationCredentials
 )
-
+from db import get_users_storage
 from settings import get_settings
+
 
 bearer = HTTPBearer()
 
@@ -31,7 +32,8 @@ def extract_user_info(auth: HTTPAuthorizationCredentials = Depends(bearer)):
             options={'require': ['exp']},
             algorithms=['HS256']
         )
-        return payload
+        storage = get_users_storage()
+        return storage.get_user(payload['username'])
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=403,

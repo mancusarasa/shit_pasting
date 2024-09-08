@@ -73,7 +73,10 @@ class UserStorage:
         :param username: str representing the user to retrieve.
         :return dict with the info of the user
         '''
-        return self.collection.find_one({'username': username})
+        return self.collection.find_one(
+            {'username': username},
+            projection={'_id': False, 'password': False}
+        )
 
 
 class UserAlreadyExists(Exception):
