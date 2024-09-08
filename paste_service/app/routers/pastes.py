@@ -31,8 +31,8 @@ def retrieve_paste(paste_id: str):
 
 
 @router.get(
-    '/myPastes',
-    tags=['myPastes'],
+    '/my_pastes',
+    tags=['my_pastes'],
     status_code=200
 )
 def retrieve_pastes(user_id: str = Depends(extract_current_user)):
@@ -43,8 +43,8 @@ def retrieve_pastes(user_id: str = Depends(extract_current_user)):
 
 
 @router.post(
-    '/myPastes',
-    tags=['myPastes'],
+    '/my_pastes',
+    tags=['my_pastes'],
 )
 def create_paste(paste: Paste, user_id: str = Depends(extract_current_user)):
     storage = get_pastes_storage()
