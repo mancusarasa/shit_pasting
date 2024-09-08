@@ -10,4 +10,4 @@ ADD app ./
 RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
 
 # default entrypoint
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3", "-u", "main.py"]
