@@ -48,10 +48,10 @@ def extract_current_user(token: str = Depends(extract_jwt)):
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=403,
-            detail={'error': f'Your token has expired'}
+            detail={'error': 'Your token has expired'}
         )
     except jwt.InvalidTokenError:
         raise HTTPException(
             status_code=403,
-            detail={'error': f'Invalid token provided'}
+            detail={'error': 'Invalid token provided'}
         )
