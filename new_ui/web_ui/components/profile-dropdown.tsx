@@ -41,7 +41,7 @@ export const ProfileDropdown = () => {
           <DropdownItem>
             <NextLink className="flex" href="/logout">
               <LogoutIcon className="w-5 h-5 mr-3"/>
-              <p class="text-red-600">Log Out</p>
+              <p className="text-red-600">Log Out</p>
             </NextLink>
           </DropdownItem>
         </DropdownMenu>
