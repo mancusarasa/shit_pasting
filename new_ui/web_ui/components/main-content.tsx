@@ -7,10 +7,10 @@ import {
   initialState,
   AuthDispatchContextType
 } from "@/components/auth-context";
-import { Sidebar } from "@/components/sidebar";
 import { useReducer } from "react";
 
 export const MainContent = ({children,}: {children: React.ReactNode;}) => {
+
   const [state, dispatch] = useReducer(
     authReducer,
     initialState
