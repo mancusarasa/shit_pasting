@@ -35,7 +35,11 @@ export const Navbar = () => {
       <NavbarContent justify="start">
         <NavbarMenuToggle />
 				<NavbarBrand as="li">
-					<NextLink className="flex items-center gap-1" href="/">
+					<NextLink
+            className="flex items-center gap-1"
+            href={"/"}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
 						<p className="font-bold text-inherit">Shit Pasting</p>
 					</NextLink>
 				</NavbarBrand>
@@ -48,25 +52,41 @@ export const Navbar = () => {
       </NavbarContent>
       <NavbarMenu>
         <NavbarMenuItem key="home">
-          <NextLink href={'/'} className="flex items-center hover:underline">
+          <NextLink
+            href={"/"}
+            className="flex items-center hover:underline"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
             <HomeIcon className="w-5 h-5 mr-3" />
             <span>Home</span>
           </NextLink>
         </NavbarMenuItem>
         <NavbarMenuItem key="compose">
-          <NextLink href={'/compose'} className="flex items-center hover:underline">
+          <NextLink
+            href={"/compose"}
+            className="flex items-center hover:underline"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
             <NewPasteIcon className="w-5 h-5 mr-3" />
             <span>New Paste</span>
           </NextLink>
         </NavbarMenuItem>
         <NavbarMenuItem key="my_pastes">
-          <NextLink href={'/my_pastes'} className="flex items-center hover:underline">
+          <NextLink
+            href={"/my_pastes"}
+            className="flex items-center hover:underline"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
             <MyPastesIcon className="w-5 h-5 mr-3" />
             <span>My Pastes</span>
           </NextLink>
         </NavbarMenuItem>
         <NavbarMenuItem key="feed">
-          <NextLink href={'/feed'} className="flex items-center hover:underline">
+          <NextLink
+            href={"/feed"}
+            className="flex items-center hover:underline"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
             <MyFeedIcon className="w-5 h-5 mr-3" />
             <span>Feed</span>
           </NextLink>
