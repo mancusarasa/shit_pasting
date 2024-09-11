@@ -4,7 +4,6 @@ import { title } from "@/components/primitives";
 import { useRouter } from "next/navigation";
 
 export default function IndividualPastePage({ params }: { params: { id: string } }) {
-  console.log(params);
   const paste_id = params.id;
 	return (
 		<div>
