@@ -27,7 +27,7 @@ export const ProfileDropdown = () => {
         </DropdownTrigger>
         <DropdownMenu variant="flat">
           <DropdownItem key="profile">
-            <NextLink className="flex" href="/myProfile">
+            <NextLink className="flex" href="/profile">
               <ProfileIcon className="w-5 h-5 mr-3"/>
               <p>My profile</p>
             </NextLink>
