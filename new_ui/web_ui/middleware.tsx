@@ -36,7 +36,9 @@ export async function middleware(request: NextRequest) {
   if (isAuthenticated) {
       return NextResponse.next();
   } else {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const loginUrl = new URL('/login', request.url)
+      // loginUrl.searchParams.set('from', request.nextUrl.pathname);
+      return NextResponse.redirect(loginUrl);
   }
 }
 
