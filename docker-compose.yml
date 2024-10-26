@@ -20,6 +20,7 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        command: mongod --quiet --logpath /dev/null
     paste_service:
         build: ./paste_service/
         environment:
@@ -39,6 +40,7 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        command: mongod --quiet --logpath /dev/null
     new_ui:
         build:
             context: ./new_ui/
