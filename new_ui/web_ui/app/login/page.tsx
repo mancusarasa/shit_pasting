@@ -9,35 +9,46 @@ import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
 import { AuthContext } from "@/components/auth-context";
 import { useState, useContext } from 'react';
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const { state, dispatch } = useContext(AuthContext);
+  const router = useRouter();
 
   const handleLogin = async (event: PressEvent) => {
     const host = process.env.NEXT_PUBLIC_AUTH_SERVICE_HOST;
     const port = process.env.NEXT_PUBLIC_AUTH_SERVICE_PORT;
     const authServiceUrl = `http://${host}:${port}/login`;
-    await fetch(authServiceUrl, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    const result = await fetch(authServiceUrl, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         username: username,
         password: password
       })
     }).then(response => {
-      return response.json();
-    }).then (jsonValue => {
+      return response.json().then(data => ({
+        status: response.status,
+        data: data
+      }))
+    }).catch(error => {
+      console.log(error);
+      throw error;
+    });
+    console.log(result);
+    if (result.status === 200) {
       dispatch({
         event_type: 'logged_in',
-        auth_token: jsonValue.auth_token
+        auth_token: result.data.auth_token
       });
-    })
-    .catch(error => {
-      console.log('caught something?');
-    });
-  };
+      router.push("/");
+      router.refresh();
+    } else {
+      // show authentication error?
+    }
+  }
 
   return (
     <div>
@@ -86,3 +97,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
