@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Card, CardBody } from "@nextui-org/card";
 import { Spacer } from "@nextui-org/spacer";
@@ -8,7 +8,7 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
 import { AuthContext } from "@/components/auth-context";
-import { useState, useContext } from 'react';
+import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -40,7 +40,7 @@ export default function LoginPage() {
     console.log(result);
     if (result.status === 200) {
       dispatch({
-        event_type: 'logged_in',
+        event_type: "logged_in",
         auth_token: result.data.auth_token
       });
       router.push("/");
