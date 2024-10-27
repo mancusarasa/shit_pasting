@@ -32,12 +32,10 @@ export default function LoginPage() {
       return response.json().then(data => ({
         status: response.status,
         data: data
-      }))
+      }));
     }).catch(error => {
-      console.log(error);
       throw error;
     });
-    console.log(result);
     if (result.status === 200) {
       dispatch({
         event_type: "logged_in",
