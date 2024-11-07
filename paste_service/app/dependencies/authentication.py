@@ -1,3 +1,5 @@
+from typing import Optional
+
 import requests
 from fastapi import (
     Depends,
@@ -27,7 +29,7 @@ def extract_jwt(auth: HTTPAuthorizationCredentials = Depends(bearer)):
     return auth.credentials
 
 
-def extract_current_user(token: str = Depends(extract_jwt)):
+def extract_current_user(token: str = Depends(extract_jwt)) -> Optional[str]:
     '''
     Extracts the user_id from the provided jwt
     token.
@@ -39,9 +41,15 @@ def extract_current_user(token: str = Depends(extract_jwt)):
         'Authorization': f'Bearer {token}',
     }
     settings = get_settings()
-    response = requests.get(
-        f'{settings.auth_service_url}/userinfo',
-        headers=headers
-    )
-    response.raise_for_status()
-    return response.json()['username']
+    try:
+        response = requests.get(
+            f'{settings.auth_service_url}/userinfo',
+            headers=headers
+        )
+        response.raise_for_status()
+        return response.json()['username']
+    except requests.HTTPError:
+        raise HTTPException(
+            status_code=403,
+            detail=response.json()
+        )
