@@ -30,10 +30,9 @@ export default function MyPastesPage() {
       }).then(result => {
         if (result.status === 403) {
           dispatch({event_type: "logged_out"});
-          router.push("/");
+          router.push("/login");
           router.refresh();
         } else if (result.status === 200) {
-            console.log(result.data.pastes);
             setPastes(result.data.pastes);
         }
       }).catch(error => {
@@ -41,7 +40,7 @@ export default function MyPastesPage() {
       });
     };
     fetchPastes();
-  }, [router, state, dispatch]);
+  }, []);
 
 	return (
 		<div>
