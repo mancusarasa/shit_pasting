@@ -11,6 +11,7 @@ services:
             SALT_ROUNDS: 8
             TOKEN_EXPIRATION: 10
             JWT_SECRET: secret
+        container_name: auth_service
         ports:
             - 8000:8000
         depends_on:
@@ -21,6 +22,7 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
         command: mongod --quiet --logpath /dev/null
+        container_name: auth_storage
     paste_service:
         build: ./paste_service/
         environment:
@@ -31,6 +33,7 @@ services:
             PASTE_EXPIRATION: 5
             AUTH_SERVICE_HOST: auth_service
             AUTH_SERVICE_PORT: 8000
+        container_name: paste_service
         ports:
             - 9000:9000
         depends_on:
@@ -41,6 +44,7 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
         command: mongod --quiet --logpath /dev/null
+        container_name: paste_storage
     new_ui:
         build:
             context: ./new_ui/
@@ -49,6 +53,7 @@ services:
                 AUTH_SERVICE_PORT: 8000
                 PASTE_SERVICE_HOST: localhost
                 PASTE_SERVICE_PORT: 9000
+        container_name: ui
         ports:
             - 3000:3000
         depends_on:
