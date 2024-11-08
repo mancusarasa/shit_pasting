@@ -4,12 +4,35 @@ import { useEffect, useState, useContext } from 'react';
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/auth-context";
 import { title } from "@/components/primitives";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue
+} from "@nextui-org/react";
 
 export default function MyPastesPage() {
 
   const router = useRouter();
   const {state, dispatch} = useContext(AuthContext);
   const [pastes, setPastes] = useState([]);
+  const columns = [
+    {
+      key: "title",
+      label: "Title",
+    },
+    {
+      key: "creation_date",
+      label: "Creation date",
+    },
+    {
+      key: "expiration_date",
+      label: "Expiration date",
+    },
+  ];
 
   useEffect(() => {
     const fetchPastes = async () => {
@@ -45,6 +68,18 @@ export default function MyPastesPage() {
 	return (
 		<div>
 			<h1 className={title()}>MyPastes</h1>
+      <Table>
+        <TableHeader columns={columns}>
+          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+        </TableHeader>
+        <TableBody items={pastes}>
+          {(item) => (
+              <TableRow key={item['paste_id']}>
+                {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+              </TableRow>
+          )}
+        </TableBody>
+      </Table>
 		</div>
 	);
 }
