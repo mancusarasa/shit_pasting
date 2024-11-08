@@ -24,7 +24,8 @@ class PastesStorage:
         self.collection = self.database['pastes']
 
     def create_paste(self,
-        paste: str,
+        title: str,
+        paste_text: str,
         user_id: str,
         private: bool = False,
         expiration_time: int = None,
@@ -33,7 +34,8 @@ class PastesStorage:
         Persists a paste to the database. Returns the
         id generated for it, I guess.
 
-        :param paste:str text of the paste to store.
+        :param paste_title:str title of the paste to store.
+        :param paste_text:str text of the paste to store.
         :return str representing the id of the paste.
         '''
         settings = get_settings()
@@ -43,11 +45,14 @@ class PastesStorage:
             random_id = generate_random_id()
             if self.collection.find_one({'paste_id': random_id}) is None:
                 inserted = True
+                now = datetime.now(timezone.utc)
                 self.collection.insert_one({
                     'paste_id': random_id,
                     'user_id': user_id,
-                    'paste_text': paste,
-                    'expiration_date': datetime.now(timezone.utc) + timedelta(minutes=expiration),
+                    'title': title,
+                    'paste_text': paste_text,
+                    'creation_date': now,
+                    'expiration_date': now + timedelta(minutes=expiration),
                     'private': private
                 })
         return random_id

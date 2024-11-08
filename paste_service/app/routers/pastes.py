@@ -49,7 +49,8 @@ def retrieve_pastes(user_id: str = Depends(extract_current_user)):
 def create_paste(paste: Paste, user_id: str = Depends(extract_current_user)):
     storage = get_pastes_storage()
     paste_id = storage.create_paste(
-        paste=paste.paste_text,
+        title=paste.title,
+        paste_text=paste.paste_text,
         user_id=user_id,
         private=paste.private
     )
