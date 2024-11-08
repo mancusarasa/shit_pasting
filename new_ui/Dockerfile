@@ -11,8 +11,9 @@ ARG PASTE_SERVICE_PORT
 RUN apt-get update && apt-get install -y curl
 
 # install nvm + node
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
-RUN nvm install node
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+RUN nvm install 18.17.0
+RUN nvm use 18.17.0
 
 # install nextui-cli
 RUN npm install -g nextui-cli
@@ -25,10 +26,10 @@ ADD web_ui ./
 # install npm shit
 RUN npm install
 
-RUN echo "NEXT_PUBLIC_AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}" >> .env
-RUN echo "NEXT_PUBLIC_AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}" >> .env
-RUN echo "NEXT_PUBLIC_PASTE_SERVICE_HOST=${PASTE_SERVICE_HOST}" >> .env
-RUN echo "NEXT_PUBLIC_PASTE_SERVICE_PORT=${PASTE_SERVICE_PORT}" >> .env
+RUN printf "NEXT_PUBLIC_AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}\n\
+NEXT_PUBLIC_AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}\n\
+NEXT_PUBLIC_PASTE_SERVICE_HOST=${PASTE_SERVICE_HOST}\n\
+NEXT_PUBLIC_PASTE_SERVICE_PORT=${PASTE_SERVICE_PORT}\n" >> .env
 
 # create a production build
 RUN npm run build
