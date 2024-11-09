@@ -35,10 +35,10 @@ def retrieve_paste(paste_id: str):
     tags=['my_pastes'],
     status_code=200
 )
-def retrieve_pastes(user_id: str = Depends(extract_current_user)):
+def retrieve_pastes(offset: int = 0, user_id: str = Depends(extract_current_user)):
     storage = get_pastes_storage()
     return {
-        'pastes': storage.get_pastes(user_id)
+        'pastes': storage.get_pastes(user_id, offset)
     }
 
 
