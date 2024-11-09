@@ -11,8 +11,10 @@ def get_pastes_storage() -> PastesStorage:
     '''
     settings = get_settings()
     return PastesStorage(
-        settings.db_user,
-        settings.db_pass,
-        settings.db_host,
-        settings.db_port
+        settings.mysql_user,
+        settings.mysql_password,
+        settings.mysql_host,
+        settings.mysql_port,
+        settings.mysql_database
     )
+

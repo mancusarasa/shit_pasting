@@ -2,6 +2,8 @@ fastapi
 uvicorn[standard]
 pydantic
 pydantic-settings
-pymongo[srv]
 pybase62
 requests
+SQLAlchemy
+mysql-connector-python
+sqlalchemy_mixins

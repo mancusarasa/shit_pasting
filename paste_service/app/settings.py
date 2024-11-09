@@ -1,16 +1,18 @@
+
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    db_user: str
-    db_pass: str
-    db_host: str
-    db_port: str
     paste_expiration: int
     auth_service_host: str
     auth_service_port: str
+    mysql_user: str
+    mysql_password: str
+    mysql_host: str
+    mysql_port: str
+    mysql_database: str
 
     @property
     def auth_service_url(self) -> str:

@@ -5,23 +5,38 @@ from datetime import (
 )
 from typing import List
 
-from pymongo import MongoClient
+from sqlalchemy import (
+    create_engine,
+    select,
+    desc
+)
+from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import NoResultFound
 
 from settings import get_settings
 from db.id_generation import generate_random_id
+from db.models import Paste
 
 
 class PastesStorage:
-    def __init__(self, db_user: str, db_pass: str, db_host: str, db_port: str):
-        uri = 'mongodb://{}:{}@{}:{}/paste_service?authSource=admin'.format(
-            db_user,
-            db_pass,
-            db_host,
-            db_port
+    def __init__(
+        self,
+        mysql_user: str,
+        mysql_pass: str,
+        mysql_host: str,
+        mysql_port: str,
+        mysql_database: str
+    ):
+        self.engine = create_engine(
+            'mysql+mysqlconnector://{}:{}@{}:{}/{}'.format(
+                mysql_user,
+                mysql_pass,
+                mysql_host,
+                mysql_port,
+                mysql_database
+            )
         )
-        self.client = MongoClient(uri, uuidRepresentation='standard')
-        self.database = self.client['paste_service']
-        self.collection = self.database['pastes']
 
     def create_paste(self,
         title: str,
@@ -39,22 +54,31 @@ class PastesStorage:
         :return str representing the id of the paste.
         '''
         settings = get_settings()
-        inserted = False
+        success = False
         expiration = expiration_time or settings.paste_expiration
-        while not inserted:
+        while not success:
             random_id = generate_random_id()
-            if self.collection.find_one({'paste_id': random_id}) is None:
-                inserted = True
-                now = datetime.now(timezone.utc)
-                self.collection.insert_one({
-                    'paste_id': random_id,
-                    'user_id': user_id,
-                    'title': title,
-                    'paste_text': paste_text,
-                    'creation_date': now,
-                    'expiration_date': now + timedelta(minutes=expiration),
-                    'private': private
-                })
+            try:
+                with Session(self.engine) as session:
+                    now = datetime.now(timezone.utc)
+                    expiration = now + timedelta(minutes=20)
+                    new_paste = Paste(
+                        paste_id=random_id,
+                        user_id=user_id,
+                        title=title,
+                        paste_text=paste_text,
+                        creation_date=now,
+                        expiration_date=expiration,
+                        private=private
+                    )
+                session.add_all([new_paste])
+                session.commit()
+            except IntegrityError:
+                # maybe log something about the retry here?
+                pass
+            else:
+                success = True
+
         return random_id
 
     def get_paste(self, paste_id: str):
@@ -63,15 +87,14 @@ class PastesStorage:
         permissions check. The outer layers should check for
         authorization over the paste.
         '''
-        paste = self.collection.find_one(
-            filter={'paste_id': paste_id},
-            projection={'_id': False}
-        )
-        if paste is None:
+        try:
+            with Session(self.engine) as session:
+                paste = session.query(Paste).where(Paste.paste_id == paste_id).one()
+                return paste.to_dict()
+        except NoResultFound:
             raise PasteNotFoundException(paste_id)
-        return paste
 
-    def get_pastes(self, user_id: str) -> List:
+    def get_pastes(self, user_id: str, offset: int = 0) -> List:
         '''
         Returns the pastes posted by the indicated user, without
         any sort of permissions check. The outer layers should check for
@@ -80,11 +103,13 @@ class PastesStorage:
         :param user_id: str representing the user_id.
         :return list of paste objects.
         '''
-        result = self.collection.find(
-            filter={'user_id': user_id},
-            projection={'_id': False}
-        )
-        return list(result)
+        with Session(self.engine) as session:
+            s = select(Paste)\
+                .where(Paste.user_id == user_id)\
+                .order_by(desc(Paste.creation_date))\
+                .offset(offset)\
+                .limit(10)
+            return [p.to_dict() for p in session.scalars(s)]
 
 
 class PasteNotFoundException(Exception):
