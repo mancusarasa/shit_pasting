@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     mysql_host: str
     mysql_port: str
     mysql_database: str
+    pastes_page_size: int
 
     @property
     def auth_service_url(self) -> str:

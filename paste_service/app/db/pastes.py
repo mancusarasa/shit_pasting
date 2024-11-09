@@ -104,12 +104,13 @@ class PastesStorage:
         :param user_id: str representing the user_id.
         :return list of paste objects.
         '''
+        settings = get_settings()
         with Session(self.engine) as session:
             s = select(Paste)\
                 .where(Paste.user_id == user_id)\
                 .order_by(desc(Paste.creation_date))\
                 .offset(offset)\
-                .limit(10)
+                .limit(settings.pastes_page_size)
             return [p.to_dict() for p in session.scalars(s)]
 
 

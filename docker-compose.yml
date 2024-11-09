@@ -35,6 +35,7 @@ services:
             MYSQL_HOST: paste_storage
             MYSQL_PORT: 3306
             MYSQL_DATABASE: shit_pasting
+            PASTES_PAGE_SIZE: 10
         container_name: paste_service
         ports:
             - 9000:9000
