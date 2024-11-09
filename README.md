@@ -7,7 +7,7 @@ In this repo I'm trying to recreate the functionality provided by [Pastebin](htt
 First, build and start the containers:
 
 ```shell
-docker-compose build && docker-compose down && docker-compose up
+docker compose down && docker compose build && docker compose up
 ```
 
 Then in a separate terminal, run:
