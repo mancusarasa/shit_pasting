@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/auth-context";
@@ -13,12 +15,16 @@ import {
   TableCell,
   getKeyValue
 } from "@nextui-org/react";
+import { getPastes } from "@/actions/getPastes";
+import { useInView } from 'react-intersection-observer';
 
 export default function MyPastesPage() {
 
   const router = useRouter();
   const {state, dispatch} = useContext(AuthContext);
-  const [pastes, setPastes] = useState([]);
+  const [pastes, setPastes] = useState<any[]>([]);
+  const [offset, setOffset] = useState(0);
+  const { ref, inView } = useInView();
   const columns = [
     {
       key: "title",
@@ -34,40 +40,57 @@ export default function MyPastesPage() {
     },
   ];
 
+  // const fetchPastes = async () => {
+  //     const host = process.env.NEXT_PUBLIC_PASTE_SERVICE_HOST;
+  //     const port = process.env.NEXT_PUBLIC_PASTE_SERVICE_PORT;
+  //     const pasteServiceUrl = `http://${host}:${port}/my_pastes?offset=${offset}`;
+  //     return await fetch(pasteServiceUrl, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${state.auth_token}`
+  //       }
+  //     }).then(response => {
+  //       return response.json().then(data => ({
+  //         status: response.status,
+  //         data: data
+  //       }));
+  //     }).then(result => {
+  //       if (result.status === 403) {
+  //         dispatch({event_type: "logged_out"});
+  //         router.push("/login");
+  //         router.refresh();
+  //       } else if (result.status === 200) {
+  //           setPastes(result.data.pastes);
+  //       }
+  //     }).catch(error => {
+  //       throw error;
+  //     });
+  //   };
+  // fetchPastes();
+
+  const loadMorePastes = async () => {
+    const response = await getPastes(offset, state.auth_token);
+    if (response.status === 403) {
+      dispatch({event_type: "logged_out"});
+      router.push("/login");
+      router.refresh();
+    } else if (response.status === 200) {
+      const newerPastes: any[] = response.data.pastes;
+      setOffset(offset + newerPastes.length);
+      setPastes([...pastes, ...newerPastes]);
+    }
+  };
+
   useEffect(() => {
-    const fetchPastes = async () => {
-      const host = process.env.NEXT_PUBLIC_PASTE_SERVICE_HOST;
-      const port = process.env.NEXT_PUBLIC_PASTE_SERVICE_PORT;
-      const pasteServiceUrl = `http://${host}:${port}/my_pastes`;
-      return await fetch(pasteServiceUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${state.auth_token}`
-        }
-      }).then(response => {
-        return response.json().then(data => ({
-          status: response.status,
-          data: data
-        }));
-      }).then(result => {
-        if (result.status === 403) {
-          dispatch({event_type: "logged_out"});
-          router.push("/login");
-          router.refresh();
-        } else if (result.status === 200) {
-            setPastes(result.data.pastes);
-        }
-      }).catch(error => {
-        throw error;
-      });
-    };
-    fetchPastes();
-  }, []);
+    if (inView) {
+      loadMorePastes();
+    }
+  }, [inView]);
 
 	return (
 		<div>
-			<h1 className={title()}>MyPastes</h1>
+			{/*<h1 className={title()}>MyPastes</h1>*/}
       <Table>
         <TableHeader columns={columns}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -80,6 +103,9 @@ export default function MyPastesPage() {
           )}
         </TableBody>
       </Table>
+      <div ref={ref}>
+        Loading...
+      </div>
 		</div>
 	);
 }
