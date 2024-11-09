@@ -17,6 +17,8 @@ services:
             - auth_storage
     auth_storage:
         image: mongo:latest
+        logging:
+            driver: none
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
@@ -42,6 +44,8 @@ services:
     paste_storage:
         image: mysql:latest
         container_name: paste_storage
+        logging:
+            driver: none
         ports:
             - 3306:3306
         environment:
