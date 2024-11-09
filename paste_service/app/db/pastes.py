@@ -38,7 +38,8 @@ class PastesStorage:
             )
         )
 
-    def create_paste(self,
+    def create_paste(
+        self,
         title: str,
         paste_text: str,
         user_id: str,
