@@ -1,7 +1,11 @@
 "use client";
 
+import { AuthContext } from "@/components/auth-context";
+import { useRouter } from "next/navigation";
+import { useState, useContext } from "react";
 import { PressEvent } from "@react-types/shared";
 import { title } from "@/components/primitives";
+import { createPaste } from "@/actions/createPaste";
 import { Textarea } from "@nextui-org/input";
 import { Spacer } from "@nextui-org/spacer";
 import { Button } from "@nextui-org/react";
@@ -14,6 +18,11 @@ import {
 
 export default function ComposePage() {
 
+  const [pasteTitle, setPasteTitle] = useState("");
+  const [pasteText, setPasteText] = useState("");
+  const {state, dispatch} = useContext(AuthContext);
+  const router = useRouter();
+
   const expirationOptions = [
     {key: "day", label: "One day"},
     {key: "month", label: "One month"},
@@ -22,7 +31,19 @@ export default function ComposePage() {
   ];
 
   const handleSave = async (event: PressEvent) => {
-    console.log('hola');
+    const response = await createPaste(
+      pasteTitle,
+      pasteText,
+      state.auth_token
+    );
+    if (response.status === 403) {
+      dispatch({event_type: "logged_out"});
+      router.push("/login");
+      router.refresh();
+    } else if (response.status === 200) {
+      console.log('success!!');
+      console.log(response.data);
+    }
   }
 
 	return (
@@ -32,6 +53,8 @@ export default function ComposePage() {
         <Spacer y={1} />
         <Textarea
             key="title"
+            value={pasteText}
+            onValueChange={setPasteText}
             size="sm"
             minRows={8}
             variant="faded"
@@ -44,7 +67,9 @@ export default function ComposePage() {
         <hr/>
         <Spacer y={2} />
         <Input
-            key="title"
+            key="pasteTitle"
+            value={pasteTitle}
+            onValueChange={setPasteTitle}
             label={<h4 className="text-base">Name/Title:</h4>}
             size="sm"
             variant="faded"
