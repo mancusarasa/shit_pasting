@@ -24,7 +24,12 @@ export default function MyPastesPage() {
   const {state, dispatch} = useContext(AuthContext);
   const [pastes, setPastes] = useState<any[]>([]);
   const [offset, setOffset] = useState(0);
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    threshold: 0,
+    trackVisibility: true,
+    delay: 100,
+    initialInView: true
+  });
   const columns = [
     { key: "title", label: "Title" },
     { key: "creation_date", label: "Creation date"},
@@ -48,7 +53,7 @@ export default function MyPastesPage() {
     if (inView) {
       loadMorePastes();
     }
-  }, [inView]);
+  }, [offset, inView]);
 
 	return (
 		<div>
@@ -65,9 +70,7 @@ export default function MyPastesPage() {
           )}
         </TableBody>
       </Table>
-      <div ref={ref}>
-        Loading...
-      </div>
+      <div ref={ref}>Loading...</div>
 		</div>
 	);
 }
