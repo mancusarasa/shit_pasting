@@ -26,48 +26,10 @@ export default function MyPastesPage() {
   const [offset, setOffset] = useState(0);
   const { ref, inView } = useInView();
   const columns = [
-    {
-      key: "title",
-      label: "Title",
-    },
-    {
-      key: "creation_date",
-      label: "Creation date",
-    },
-    {
-      key: "expiration_date",
-      label: "Expiration date",
-    },
+    { key: "title", label: "Title" },
+    { key: "creation_date", label: "Creation date"},
+    { key: "expiration_date", label: "Expiration date"},
   ];
-
-  // const fetchPastes = async () => {
-  //     const host = process.env.NEXT_PUBLIC_PASTE_SERVICE_HOST;
-  //     const port = process.env.NEXT_PUBLIC_PASTE_SERVICE_PORT;
-  //     const pasteServiceUrl = `http://${host}:${port}/my_pastes?offset=${offset}`;
-  //     return await fetch(pasteServiceUrl, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "Authorization": `Bearer ${state.auth_token}`
-  //       }
-  //     }).then(response => {
-  //       return response.json().then(data => ({
-  //         status: response.status,
-  //         data: data
-  //       }));
-  //     }).then(result => {
-  //       if (result.status === 403) {
-  //         dispatch({event_type: "logged_out"});
-  //         router.push("/login");
-  //         router.refresh();
-  //       } else if (result.status === 200) {
-  //           setPastes(result.data.pastes);
-  //       }
-  //     }).catch(error => {
-  //       throw error;
-  //     });
-  //   };
-  // fetchPastes();
 
   const loadMorePastes = async () => {
     const response = await getPastes(offset, state.auth_token);
