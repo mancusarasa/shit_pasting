@@ -1,5 +1,6 @@
 "use client";
 
+import { PressEvent } from "@react-types/shared";
 import { title } from "@/components/primitives";
 import { Textarea } from "@nextui-org/input";
 import { Spacer } from "@nextui-org/spacer";
@@ -12,6 +13,7 @@ import {
 } from "@nextui-org/react";
 
 export default function ComposePage() {
+
   const expirationOptions = [
     {key: "day", label: "One day"},
     {key: "month", label: "One month"},
@@ -19,10 +21,14 @@ export default function ComposePage() {
     {key: "never", label: "Never"},
   ];
 
+  const handleSave = async (event: PressEvent) => {
+    console.log('hola');
+  }
+
 	return (
     <div>
       <div>
-        <h4 className="flex justify-start text-base"> Type your shit below: </h4>
+        <h4 className="flex justify-start text-base">Type your shit below:</h4>
         <Spacer y={1} />
         <Textarea
             key="title"
@@ -34,15 +40,13 @@ export default function ComposePage() {
       </div>
       <Spacer y={4} />
       <div>
-        <h4 className="flex justify-start text-base"> Extra options </h4>
+        <h4 className="flex justify-start text-base">Extra options</h4>
         <hr/>
         <Spacer y={2} />
         <Input
             key="title"
             label={<h4 className="text-base">Name/Title:</h4>}
             size="sm"
-            minRows={1}
-            maxRows={1}
             variant="faded"
             labelPlacement="outside-left"
             classNames={{
@@ -64,7 +68,14 @@ export default function ComposePage() {
         </div>
         <Spacer y={2} />
         <div className="flex justify-start">
-          <Button color="default" size="sm" radius="sm"> Save </Button>
+          <Button
+            color="default"
+            size="sm"
+            radius="sm"
+            onPress={(e) => handleSave(e)}
+          >
+            Save
+          </Button>
         </div>
       </div>
     </div>
