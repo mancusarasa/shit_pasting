@@ -9,6 +9,7 @@ import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
 import { AuthContext } from "@/components/auth-context";
 import { login } from "@/actions/login";
+import { Link } from "@nextui-org/link";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +40,7 @@ export default function LoginPage() {
   return (
     <div>
       <Card
-        className="p-5 max-w-md"
+        className="p-4 max-w-md"
       >
         <CardBody>
           <p className="font-bold mb-5">Login</p>
@@ -86,6 +87,11 @@ export default function LoginPage() {
             </Button>
         </CardBody>
       </Card>
+      <div className="flex justify-center">
+        <div className="text-sm">
+          Not a member? <Link size="sm" href="/register">Sign up!</Link>
+        </div>
+      </div>
     </div>
   );
 }
