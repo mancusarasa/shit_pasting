@@ -1,4 +1,4 @@
-export const login = async(username: string, password: string) => {
+export const login = async(username: string, password: string, rememberMe: boolean) => {
   const host = process.env.NEXT_PUBLIC_AUTH_SERVICE_HOST;
   const port = process.env.NEXT_PUBLIC_AUTH_SERVICE_PORT;
   const authServiceUrl = `http://${host}:${port}/login`;
@@ -8,7 +8,8 @@ export const login = async(username: string, password: string) => {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         username: username,
-        password: password
+        password: password,
+        remember_me: rememberMe
       })
     });
     const data = (await response.json());

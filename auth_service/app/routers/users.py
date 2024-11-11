@@ -2,6 +2,7 @@ from typing import Dict
 from fastapi import APIRouter, Response, Depends
 
 from schemas import (
+    UserInfo,
     Credentials,
     Token,
 )
@@ -27,11 +28,11 @@ router = APIRouter()
         Depends(password_is_long_enough),
     ]
 )
-def register(credentials: Credentials, response: Response):
+def register(user_info: UserInfo, response: Response):
     storage = get_users_storage()
     user = storage.register_user(
-        credentials.username,
-        credentials.password
+        user_info.username,
+        user_info.password
     )
     return user
 
@@ -47,8 +48,13 @@ def register(credentials: Credentials, response: Response):
 def login(credentials: Credentials):
     storage = get_users_storage()
     user = storage.get_user(credentials.username)
+    auth_token = create_jwt(
+        user['id'],
+        credentials.username,
+        credentials.remember_me
+    )
     return {
-        'auth_token': create_jwt(user['id'], credentials.username)
+        'auth_token': auth_token
     }
 
 

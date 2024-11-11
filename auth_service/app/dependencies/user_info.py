@@ -29,7 +29,6 @@ def extract_user_info(auth: HTTPAuthorizationCredentials = Depends(bearer)):
         payload = jwt.decode(
             token,
             settings.jwt_secret,
-            options={'require': ['exp']},
             algorithms=['HS256']
         )
         storage = get_users_storage()

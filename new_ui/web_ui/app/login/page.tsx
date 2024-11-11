@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const { state, dispatch } = useContext(AuthContext);
   const router = useRouter();
 
@@ -22,7 +23,7 @@ export default function LoginPage() {
     const host = process.env.NEXT_PUBLIC_AUTH_SERVICE_HOST;
     const port = process.env.NEXT_PUBLIC_AUTH_SERVICE_PORT;
     const authServiceUrl = `http://${host}:${port}/login`;
-    const result = await login(username, password);
+    const result = await login(username, password, rememberMe);
     if (result.status === 200) {
       dispatch({
         event_type: "logged_in",
@@ -70,7 +71,13 @@ export default function LoginPage() {
               (value: string) => setPassword(value)
             }
           />
-          <Checkbox>Remember me?</Checkbox>
+          <Checkbox
+            onValueChange={
+              (isSelected: boolean) => setRememberMe(isSelected)
+            }
+          >
+            Remember me?
+          </Checkbox>
           <Spacer y={1} />
           <Button
             onPress={(e) => handleLogin(e)}
