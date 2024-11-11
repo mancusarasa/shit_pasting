@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { AuthContext } from "@/components/auth-context";
 import { title } from "@/components/primitives";
 import {
+  Link,
   Table,
   TableHeader,
   TableColumn,
@@ -24,12 +25,14 @@ export default function MyPastesPage() {
   const {state, dispatch} = useContext(AuthContext);
   const [pastes, setPastes] = useState<any[]>([]);
   const [offset, setOffset] = useState(0);
+
   const { ref, inView } = useInView({
     threshold: 0,
     trackVisibility: true,
     delay: 100,
     initialInView: true
   });
+
   const columns = [
     { key: "title", label: "Title" },
     { key: "creation_date", label: "Creation date"},
@@ -49,6 +52,26 @@ export default function MyPastesPage() {
     }
   };
 
+  const renderCell = React.useCallback((item: any, columnKey: any) => {
+    const cellValue = item[columnKey];
+    switch (columnKey) {
+      case "title":
+        return (
+          <Link
+            href={`/paste/${item['paste_id']}`}
+          >
+            {cellValue}
+          </Link>
+        );
+      case "creation_date":
+        return cellValue;
+      case "expiration_date":
+        return cellValue;
+      default:
+        return cellValue;
+    }
+  }, [])
+
   useEffect(() => {
     if (inView) {
       loadMorePastes();
@@ -65,7 +88,7 @@ export default function MyPastesPage() {
         <TableBody items={pastes}>
           {(item) => (
               <TableRow key={item['paste_id']}>
-                {(columnKey) => <TableCell>{getKeyValue(item, columnKey)}</TableCell>}
+                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
               </TableRow>
           )}
         </TableBody>
