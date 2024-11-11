@@ -40,8 +40,9 @@ export default function ComposePage() {
       router.push("/login");
       router.refresh();
     } else if (response.status === 200) {
-      console.log('success!!');
-      console.log(response.data);
+      const newPaste: {paste_id: string} = response.data;
+      router.push(`/paste/${newPaste.paste_id}`);
+      router.refresh();
     }
   }
 
