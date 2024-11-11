@@ -6,11 +6,10 @@ import { useState, useContext } from "react";
 import { PressEvent } from "@react-types/shared";
 import { title } from "@/components/primitives";
 import { createPaste } from "@/actions/createPaste";
-import { Textarea } from "@nextui-org/input";
+import { Textarea, Input } from "@nextui-org/input";
 import { Spacer } from "@nextui-org/spacer";
-import { Button } from "@nextui-org/react";
-import { Input } from "@nextui-org/input";
 import {
+  Button,
   Select,
   SelectSection,
   SelectItem
