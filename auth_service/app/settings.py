@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     password_min_length: int
     salt_rounds: int
     token_expiration: int
-    jwt_secret: str = 'secret'
+    jwt_secret: str
 
 
 @lru_cache
