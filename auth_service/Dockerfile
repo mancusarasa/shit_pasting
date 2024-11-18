@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y build-essential cargo
 # setup the server
 RUN mkdir -p /root/auth_service
 WORKDIR /root/auth_service
-ADD app ./
+ADD app/requirements.txt ./
 RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
 
 # default entrypoint
-ENTRYPOINT ["python3", "-u", "main.py"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
