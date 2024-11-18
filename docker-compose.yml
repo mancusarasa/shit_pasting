@@ -1,6 +1,8 @@
 services:
     auth_service:
-        build: ./auth_service/
+        build:
+            context: ./auth_service/
+            target: development
         environment:
             DB_USER: root
             DB_PASS: rootpassword
@@ -27,7 +29,9 @@ services:
         command: mongod --quiet --logpath /dev/null
         container_name: auth_storage
     paste_service:
-        build: ./paste_service/
+        build:
+            context: ./paste_service/
+            target: development
         environment:
             PASTE_EXPIRATION: 5
             AUTH_SERVICE_HOST: auth_service
