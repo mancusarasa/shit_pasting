@@ -9,6 +9,7 @@ from fastapi.security.http import (
 )
 from db import get_users_storage
 from settings import get_settings
+from db.users import UserDoesntExist
 
 
 bearer = HTTPBearer()
@@ -42,4 +43,11 @@ def extract_user_info(auth: HTTPAuthorizationCredentials = Depends(bearer)):
         raise HTTPException(
             status_code=403,
             detail={'error': 'Invalid token provided'}
+        )
+    except UserDoesntExist:
+        raise HTTPException(
+            status_code=403,
+            detail={
+              'error': f"Invalid user {payload['username']} decoded from token"
+            }
         )
