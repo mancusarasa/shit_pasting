@@ -10,6 +10,8 @@ services:
             SALT_ROUNDS: 8
             TOKEN_EXPIRATION: 10
             JWT_SECRET: secret
+        volumes:
+            - ./auth_service/app:/root/auth_service
         container_name: auth_service
         ports:
             - 8000:8000
@@ -36,6 +38,8 @@ services:
             MYSQL_PORT: 3306
             MYSQL_DATABASE: shit_pasting
             PASTES_PAGE_SIZE: 10
+        volumes:
+            - ./paste_service/app:/root/paste_service
         container_name: paste_service
         ports:
             - 9000:9000
