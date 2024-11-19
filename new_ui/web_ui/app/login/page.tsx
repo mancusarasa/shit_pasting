@@ -21,9 +21,6 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = async (event: PressEvent) => {
-    const host = process.env.NEXT_PUBLIC_AUTH_SERVICE_HOST;
-    const port = process.env.NEXT_PUBLIC_AUTH_SERVICE_PORT;
-    const authServiceUrl = `http://${host}:${port}/login`;
     const result = await login(username, password, rememberMe);
     if (result.status === 200) {
       dispatch({
