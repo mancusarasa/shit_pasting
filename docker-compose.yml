@@ -12,13 +12,20 @@ services:
             SALT_ROUNDS: 8
             TOKEN_EXPIRATION: 10
             JWT_SECRET: secret
+            RABBIT_MQ_USER: rabbitmq
+            RABBIT_MQ_PASS: pass
+            RABBIT_MQ_HOST: message_queue
+            RABBIT_MQ_PORT: 5672
         volumes:
             - ./auth_service/app:/root/auth_service
         container_name: auth_service
         ports:
             - 8000:8000
         depends_on:
-            - auth_storage
+            auth_storage:
+                condition: service_started
+            message_queue:
+                condition: service_healthy
     auth_storage:
         image: mongo:latest
         logging:
@@ -28,6 +35,8 @@ services:
             MONGO_INITDB_ROOT_PASSWORD: rootpassword
         command: mongod --quiet --logpath /dev/null
         container_name: auth_storage
+        ports:
+            - 27017:27017
     paste_service:
         build:
             context: ./paste_service/
@@ -82,3 +91,18 @@ services:
         depends_on:
             - paste_service
             - auth_service
+    message_queue:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        restart: always
+        ports:
+            - 5672:5672
+            - 15672:15672
+        environment:
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=pass
+        healthcheck:
+            test: rabbitmq-diagnostics -q check_running
+            interval: 30s
+            timeout: 30s
+            retries: 5
