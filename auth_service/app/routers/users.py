@@ -1,5 +1,10 @@
 from typing import Dict
-from fastapi import APIRouter, Response, Depends
+from fastapi import (
+    APIRouter,
+    Response,
+    Depends,
+    BackgroundTasks
+)
 
 from schemas import (
     UserInfo,
@@ -15,6 +20,15 @@ from dependencies.json_web_token import create_jwt
 from dependencies.user_info import extract_user_info
 from db import get_users_storage
 from db.users import UserAlreadyExists
+from amqp.connection import Connection
+
+from json import dumps
+
+
+def queue_email_send(email_content: str) -> None:
+    connection = Connection()
+    connection.send_message(email_content)
+
 
 router = APIRouter()
 
@@ -28,11 +42,21 @@ router = APIRouter()
         Depends(password_is_long_enough),
     ]
 )
-def register(user_info: UserInfo, response: Response):
+def register(
+    user_info: UserInfo,
+    response: Response,
+    background_tasks: BackgroundTasks
+):
     storage = get_users_storage()
     user = storage.register_user(
         user_info.username,
         user_info.password
+    )
+    background_tasks.add_task(
+        queue_email_send,
+        email_content=dumps({
+            'username': user_info.username
+        })
     )
     return user
 
