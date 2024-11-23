@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     salt_rounds: int
     token_expiration: int
     jwt_secret: str
+    rabbit_mq_user: str
+    rabbit_mq_pass: str
+    rabbit_mq_host: str
+    rabbit_mq_port: int
 
 
 @lru_cache
