@@ -3,13 +3,14 @@
 import { useState, useEffect} from "react";
 import { title } from "@/components/primitives";
 import { Paste } from "@/types/paste";
-import { useRouter } from "next/navigation";
-import { Textarea } from "@nextui-org/input";
+import { useParams } from "next/navigation";
+import { Textarea } from "@heroui/input";
 import { getPaste } from "@/actions/getPaste";
 
-export default function IndividualPastePage({ params }: { params: { id: string } }) {
+export default function IndividualPastePage() {
 
   const [paste, setPaste] = useState<Paste | null>(null);
+  const params = useParams<{id: string}>();
 
   const loadPaste = async() => {
     const response = await getPaste(params.id);
