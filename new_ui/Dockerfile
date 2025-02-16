@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y curl
 
 # install nvm + node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-RUN nvm install 18.17.0
-RUN nvm use 18.17.0
+RUN nvm install 18.18.0
+RUN nvm use 18.18.0
 
 # install nextui-cli
 RUN npm install -g nextui-cli
