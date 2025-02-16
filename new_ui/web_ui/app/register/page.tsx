@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { register } from "@/actions/register";
-import { Input } from "@nextui-org/react";
-import { Button } from "@nextui-org/button";
-import { Card, CardBody } from "@nextui-org/card";
-import { Spacer } from "@nextui-org/spacer";
+import { Input } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
+import { Spacer } from "@heroui/spacer";
 import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {

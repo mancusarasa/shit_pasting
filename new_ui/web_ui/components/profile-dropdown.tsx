@@ -4,8 +4,8 @@ import {
   DropdownTrigger,
   DropdownItem,
   DropdownMenu
-} from "@nextui-org/dropdown";
-import { Avatar } from "@nextui-org/avatar";
+} from "@heroui/dropdown";
+import { Avatar } from "@heroui/avatar";
 import {
   ProfileIcon,
   SettingsIcon,
@@ -32,13 +32,13 @@ export const ProfileDropdown = () => {
               <p>My profile</p>
             </NextLink>
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem key="settings">
             <NextLink className="flex" href="/settings">
               <SettingsIcon className="w-5 h-5 mr-3" />
               <p>Settings</p>
             </NextLink>
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem key="logout">
             <NextLink className="flex" href="/logout">
               <LogoutIcon className="w-5 h-5 mr-3"/>
               <p className="text-red-600">Log Out</p>

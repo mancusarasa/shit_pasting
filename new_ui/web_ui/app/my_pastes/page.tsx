@@ -15,7 +15,7 @@ import {
   TableRow,
   TableCell,
   getKeyValue
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { getPastes } from "@/actions/getPastes";
 import { useInView } from 'react-intersection-observer';
 

@@ -15,7 +15,7 @@ import {
 	NavbarBrand,
 	NavbarItem,
 	NavbarMenuItem,
-} from "@nextui-org/navbar";
+} from "@heroui/navbar";
 import NextLink from "next/link";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { ProfileDropdown } from "@/components/profile-dropdown";

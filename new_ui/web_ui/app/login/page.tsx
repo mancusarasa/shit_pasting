@@ -1,15 +1,15 @@
 "use client";
 
-import { Card, CardBody } from "@nextui-org/card";
-import { Spacer } from "@nextui-org/spacer";
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
-import { Checkbox } from "@nextui-org/checkbox";
+import { Card, CardBody } from "@heroui/card";
+import { Spacer } from "@heroui/spacer";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Checkbox } from "@heroui/checkbox";
 import { MailIcon, PasswordIcon } from "@/components/icons";
 import { PressEvent } from "@react-types/shared";
 import { AuthContext } from "@/components/auth-context";
 import { login } from "@/actions/login";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 

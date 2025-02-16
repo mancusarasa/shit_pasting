@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
-import { Link } from "@nextui-org/link";
+import { Link } from "@heroui/link";
 import { MainContent } from "@/components/main-content";
 import clsx from "clsx";
 

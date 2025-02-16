@@ -6,14 +6,14 @@ import { useState, useContext } from "react";
 import { PressEvent } from "@react-types/shared";
 import { title } from "@/components/primitives";
 import { createPaste } from "@/actions/createPaste";
-import { Textarea, Input } from "@nextui-org/input";
-import { Spacer } from "@nextui-org/spacer";
+import { Textarea, Input } from "@heroui/input";
+import { Spacer } from "@heroui/spacer";
 import {
   Button,
   Select,
   SelectSection,
   SelectItem
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 export default function ComposePage() {
 
