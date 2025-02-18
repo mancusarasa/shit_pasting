@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - name: auth-service
+          image: auth-service:prod
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASS
+              value: "rootpassword"
+            - name: DB_HOST
+              value: "auth-storage-service"
+            - name: DB_PORT
+              value: "27017"
+            - name: PASSWORD_MIN_LENGTH
+              value: "8"
+            - name: SALT_ROUNDS
+              value: "8"
+            - name: TOKEN_EXPIRATION
+              value: "10"
+            - name: JWT_SECRET
+              value: "secret"
+            - name: RABBIT_MQ_USER
+              value: "rabbitmq"
+            - name: RABBIT_MQ_PASS
+              value: "pass"
+            - name: RABBIT_MQ_HOST
+              value: "message_queue"
+            - name: RABBIT_MQ_PORT
+              value: "5672"
