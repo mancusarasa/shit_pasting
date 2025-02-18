@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-storage-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-storage
+  template:
+    metadata:
+      labels:
+        app: auth-storage
+    spec:
+      containers:
+        - name: auth-storage
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "root"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "rootpassword"
