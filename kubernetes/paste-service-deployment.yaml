@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paste-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paste-service
+  template:
+    metadata:
+      labels:
+        app: paste-service
+    spec:
+      containers:
+        - name: paste-service
+          image: paste-service:prod
+          ports:
+            - containerPort: 9000
+          env:
+            - name: PASTE_EXPIRATION
+              value: "5"
+            - name: AUTH_SERVICE_HOST
+              value: "auth-service"
+            - name: AUTH_SERVICE_PORT
+              value: "8000"
+            - name: MYSQL_USER
+              value: dbuser
+            - name: MYSQL_PASSWORD
+              value: dbpassword
+            - name: MYSQL_HOST
+              value: paste-storage-service
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_DATABASE
+              value: shit_pasting
+            - name: PASTES_PAGE_SIZE
+              value: "10"

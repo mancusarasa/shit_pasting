@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paste-storage-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paste-storage
+  template:
+    metadata:
+      labels:
+        app: paste-storage
+    spec:
+      containers:
+        - name: paste-storage
+          image: mysql:latest
+          env:
+            - name: MYSQL_DATABASE
+              value: shit_pasting
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_USER
+              value: dbuser
+            - name: MYSQL_PASSWORD
+              value: dbpassword
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+          ports:
+            - containerPort: 3306
+      volumes:
+        - name: initdb
+          configMap:
+            name: paste-storage-initdb-config
+              
