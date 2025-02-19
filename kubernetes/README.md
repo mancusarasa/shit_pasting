@@ -1,6 +1,6 @@
 # How to run this app in a Kubernetes cluster
 
-To start, I'm using Minikube to run this in a desktop environment. So first, run `minikube start --driver=docker` to create the cluster.
+To start, I'm using Minikube to run this in a desktop environment. So first, run `minikube start --driver=docker` to create the cluster. After that, run `eval $(minikube docker-env)` so minikube knows where the docker registry for your image is.
 
 Then, build each image (`auth_service/paste_service/new_ui`) with the appropriate name:
 
@@ -22,6 +22,16 @@ docker build -t new-ui:prod .
 After that, apply the deployments and the services one by one:
 
 ```shell
+kubectl apply -f auth-storage-deployment.yaml
+kubectl apply -f auth-storage-service.yaml
+
 kubectl apply -f auth-service-deployment.yaml
 kubectl apply -f auth-service-service.yaml
+
+kubectl apply -f paste-storage-initdb-configmap.yaml
+kubectl apply -f paste-storage-deployment.yaml
+kubectl apply -f paste-storage-service.yaml
+
+kubectl apply -f paste-service-deployment.yaml
+kubectl apply -f paste-service-service.yaml
 ```
