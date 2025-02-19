@@ -26,7 +26,7 @@ You should get an output that looks something like this:
 After performing the authentication, you can also save some pastes:
 
 ```shell
-curl -H "Content-type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOTgwYjM2NGYtMmU2NC00ZTQ1LWEwN2EtNTBkZjJmZGU5M2NlIiwiZXhwIjoxNjkwOTgzNDIxfQ.HUYQd24CYplB_Is2BPL4AahB-merGFd-zjQT2_IZbho" -X POST localhost:9000/myPastes -d '{"paste_text": "one paste"}'
+curl -H "Content-type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOTgwYjM2NGYtMmU2NC00ZTQ1LWEwN2EtNTBkZjJmZGU5M2NlIiwiZXhwIjoxNjkwOTgzNDIxfQ.HUYQd24CYplB_Is2BPL4AahB-merGFd-zjQT2_IZbho" -X POST localhost:9000/my_pastes -d '{"paste_text": "one paste"}'
 ```
 
 You should get an output that looks like this:
